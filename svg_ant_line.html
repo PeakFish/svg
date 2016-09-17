@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!-- http://jsbin.com/yiwane -->
+<html>
+<head>
+<meta name="description" content="Star Generator" />
+  <meta charset="utf-8">
+  <title>JS Bin</title>
+  <style>
+    body {
+      background: black;
+    }
+    
+    svg path {
+      stroke: white;
+      stroke-dasharray: 10 10;
+      stroke-width: 2;
+      stroke-linejoin: round;
+      -webkit-animation: ant .5s linear infinite;
+    }
+    
+    @-webkit-keyframes ant {
+      0% {
+        stroke-dashoffset: 0;
+      }
+      100% {
+        stroke-dashoffset: 20;
+      }
+    }
+  </style>
+</head>
+<body>
+  <svg width="240" height="240" viewBox="-120 -120.5 240 240">
+    <path id="svgPath"></path>
+  </svg>
+  <p></p>
+  <textarea name="" id="text" cols="80" rows="10"></textarea>
+<script type="text/javascript">
+var r = 100;
+var p = [];
+var n = 6;
+
+var step = Math.PI * 2 / n;
+var offset = -Math.PI / 2;
+for(var i = 0; i < n; i++) {
+  p.push([r * Math.cos(offset + i * step),
+          r * Math.sin(offset + i * step)]);
+}
+
+var path = [];
+
+function push() {
+  path.push([].slice.apply(arguments));
+}
+
+function flatten(path) {
+  var result = [];
+  path.forEach(function(seg) {
+    if (seg instanceof Array) {
+      result = result.concat(flatten(seg));
+    } else {
+      if (parseInt(seg, 10)) {
+        seg = parseInt(seg * 10, 10) / 10;
+      }
+      result.push(seg);
+    }
+  });
+  return result;
+}
+
+push('M', 0, -r);
+push('A', r, r, 0, 0, 1, 0, r);
+push('A', r, r, 0, 0, 1, 0, -r);
+
+push('M', p[0]);
+push('L', p[2], 
+     'L', p[5], 
+     'L', p[3], 
+     'L', p[1], 
+     'L', p[4], 
+     'L', p[0], 
+     'L', p[3]);
+
+path = flatten(path).join(' ');
+
+svgPath.setAttribute('d', path);
+text.value = path;
+
+</script>
+</body>
+</html>

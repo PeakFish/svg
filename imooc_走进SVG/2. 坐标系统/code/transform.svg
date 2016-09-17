@@ -1,0 +1,10 @@
+<svg>
+    <g id="b">
+        <g id="a" fill="blue">
+            <polygon points="0 0
+                50 0
+                0 100">
+            </polygon>
+        </g>
+    </g>
+</svg>
